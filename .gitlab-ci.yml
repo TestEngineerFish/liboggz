@@ -1,0 +1,37 @@
+# Build liboggz with GCC
+build-gcc:
+  tags:
+    - alpine
+    - docker
+
+  stage: build
+
+  before_script:
+  - apk update
+  - apk add git make gcc g++ automake autoconf libtool gettext libogg-dev
+
+  script:
+    # compile
+    - ./autogen.sh
+    - ./configure || cat config.log
+    - make
+    - make check
+
+# Build liboggz with clang
+build-clang:
+  tags:
+    - alpine
+    - docker
+
+  stage: build
+
+  before_script:
+  - apk update
+  - apk add git make clang gcc g++ automake autoconf libtool gettext libogg-dev
+
+  script:
+    # compile
+    - ./autogen.sh
+    - CC=clang ./configure || cat config.log
+    - make
+    - make check
